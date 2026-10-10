@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   description: SITE_CONFIG.description,
 };
 
+import SmoothScroll from "@/components/providers/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,10 +40,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${oswald.variable} h-full antialiased scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${oswald.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#030303] text-[#f5f5f5] font-sans">
-        {children}
+      <body className="text-[#f5f5f5] font-sans">
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

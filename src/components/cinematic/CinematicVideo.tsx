@@ -5,30 +5,25 @@ import React, { useEffect, useRef } from "react";
 // ==========================================
 // CINEMATIC TUNING CONSTANTS
 // ==========================================
-// Lower VIDEO_EASE = slower, more cinematic follow. Do NOT go above 0.04.
-const VIDEO_EASE = 0.028;
-const PARALLAX_EASE = 0.035;
-const DEAD_ZONE_RADIUS = 0.06;
-const MIN_VIDEO_PROGRESS = 0.04;
-const MAX_VIDEO_PROGRESS = 0.93;
-const MAX_TRANSLATE_X = 10;
-const MAX_TRANSLATE_Y = 7;
-const MAX_ROTATE_X = 0.8;
-const MAX_ROTATE_Y = 0.8;
+const PARALLAX_EASE = 0.05;
+const DEAD_ZONE_RADIUS = 0.04;
+const MAX_TRANSLATE_X = 14;
+const MAX_TRANSLATE_Y = 10;
+const MAX_ROTATE_X = 0.9;
+const MAX_ROTATE_Y = 0.9;
 const CONTAINER_SCALE = 1.06;
-
-// ── THE CRITICAL FIX ─────────────────────────────────────────────────────────
-// Only write to video.currentTime when the change exceeds this many seconds.
-// At 60fps with a low ease, currentTime moves ~0.002s per frame — far below
-// what the decoder can handle. This threshold batches changes into meaningful
-// seeks, eliminating the stutter/stuttering caused by decoder thrashing.
-const SEEK_THRESHOLD = 0.04;
 
 interface CinematicVideoProps {
   src?: string;
   className?: string;
 }
 
+/**
+ * CinematicVideo:
+ * High-performance ambient cinematic background.
+ * Plays continuously at native 60fps/120fps with zero decoder seek thrashing.
+ * Enhanced with subtle 3D cursor perspective tilt and smooth scroll depth parallax.
+ */
 export function CinematicVideo({
   src = "/video/portfolio-background.mp4",
   className = "",
@@ -36,20 +31,7 @@ export function CinematicVideo({
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const isReadyRef = useRef<boolean>(false);
-  const durationRef = useRef<number>(0);
-
-  // Internal smooth timeline (the value we LERP every frame)
-  const smoothTimeRef = useRef<number>(0);
-  // What the user's input is asking for
-  const targetTimeRef = useRef<number>(0);
-  // The last time we actually wrote to video.currentTime
-  const lastSeekRef = useRef<number>(0);
-
-  const mouseProgressRef = useRef<number>(0.5);
-  const scrollProgressRef = useRef<number>(0);
-
-  // Parallax
+  // Parallax target and current values
   const tPX = useRef<number>(0);
   const tPY = useRef<number>(0);
   const cPX = useRef<number>(0);
@@ -59,6 +41,7 @@ export function CinematicVideo({
   const cRX = useRef<number>(0);
   const cRY = useRef<number>(0);
 
+  const scrollProgressRef = useRef<number>(0);
   const reducedMotionRef = useRef<boolean>(false);
   const rafRef = useRef<number>(0);
 
@@ -75,22 +58,18 @@ export function CinematicVideo({
     mq.addEventListener("change", onMQChange);
 
     const video = videoRef.current;
-    if (!video) return;
-
-    const computeTarget = () => {
-      if (!isReadyRef.current || durationRef.current <= 0) return;
-      const mouse =
-        MIN_VIDEO_PROGRESS +
-        mouseProgressRef.current * (MAX_VIDEO_PROGRESS - MIN_VIDEO_PROGRESS);
-      const scroll =
-        MIN_VIDEO_PROGRESS +
-        scrollProgressRef.current * (MAX_VIDEO_PROGRESS - MIN_VIDEO_PROGRESS);
-      targetTimeRef.current =
-        Math.min(
-          MAX_VIDEO_PROGRESS,
-          Math.max(MIN_VIDEO_PROGRESS, mouse * 0.88 + scroll * 0.12)
-        ) * durationRef.current;
-    };
+    if (video) {
+      // Ensure smooth ambient playback
+      video.playbackRate = 0.9; // Subtle cinematic pace
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Auto-play was prevented (browser policy), mute and retry
+          video.muted = true;
+          video.play().catch(() => {});
+        });
+      }
+    }
 
     const onMouseMove = (e: MouseEvent) => {
       if (reducedMotionRef.current) return;
@@ -106,7 +85,6 @@ export function CinematicVideo({
         const remap = (abs - DEAD_ZONE_RADIUS) / (0.5 - DEAD_ZONE_RADIUS);
         stabilised = 0.5 + sign * Math.min(0.5, remap * 0.5);
       }
-      mouseProgressRef.current = stabilised;
 
       const cx = (e.clientX / W) * 2 - 1;
       const cy = (e.clientY / H) * 2 - 1;
@@ -114,81 +92,59 @@ export function CinematicVideo({
       tPY.current = cy * -MAX_TRANSLATE_Y;
       tRX.current = cy * -MAX_ROTATE_X;
       tRY.current = cx * MAX_ROTATE_Y;
-
-      computeTarget();
     };
 
-    const onScroll = () => {
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgressRef.current =
-        docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
-      computeTarget();
+    const updateScrollProgress = () => {
+      const lenis = (window as unknown as { __lenis?: { progress?: number } }).__lenis;
+      if (lenis && typeof lenis.progress === "number") {
+        scrollProgressRef.current = Math.min(1, Math.max(0, lenis.progress));
+      } else {
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgressRef.current =
+          docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
+      }
     };
-
-    const onMetadata = () => {
-      video.pause();
-      const dur = video.duration || 1;
-      durationRef.current = dur;
-
-      const initTime =
-        dur * (MIN_VIDEO_PROGRESS + 0.5 * (MAX_VIDEO_PROGRESS - MIN_VIDEO_PROGRESS));
-
-      try { video.currentTime = initTime; } catch { /* noop */ }
-
-      smoothTimeRef.current = initTime;
-      targetTimeRef.current = initTime;
-      lastSeekRef.current = initTime;
-      isReadyRef.current = true;
-      computeTarget();
-    };
-
-    video.addEventListener("loadedmetadata", onMetadata);
-    if (video.readyState >= 1) onMetadata();
 
     const animate = () => {
-      if (isReadyRef.current && video && !reducedMotionRef.current) {
-        // 1. Smooth the internal time value toward the target
-        smoothTimeRef.current +=
-          (targetTimeRef.current - smoothTimeRef.current) * VIDEO_EASE;
+      if (!reducedMotionRef.current && containerRef.current) {
+        // Multi-plane 3D Parallax interpolation
+        cPX.current += (tPX.current - cPX.current) * PARALLAX_EASE;
+        cPY.current += (tPY.current - cPY.current) * PARALLAX_EASE;
+        cRX.current += (tRX.current - cRX.current) * PARALLAX_EASE;
+        cRY.current += (tRY.current - cRY.current) * PARALLAX_EASE;
 
-        // 2. Only actually seek the decoder when the change is large enough.
-        //    This is the core fix for stutter: avoid 60 seeks/s.
-        if (Math.abs(smoothTimeRef.current - lastSeekRef.current) > SEEK_THRESHOLD) {
-          try {
-            video.currentTime = smoothTimeRef.current;
-            lastSeekRef.current = smoothTimeRef.current;
-          } catch { /* video not ready, skip */ }
-        }
+        // Subtle vertical scroll parallax depth (up to -40px across page)
+        const scrollParallaxY = (scrollProgressRef.current - 0.5) * -40;
+        const totalY = cPY.current + scrollParallaxY;
 
-        // 3. Parallax — slow, weighted drift
-        if (containerRef.current) {
-          cPX.current += (tPX.current - cPX.current) * PARALLAX_EASE;
-          cPY.current += (tPY.current - cPY.current) * PARALLAX_EASE;
-          cRX.current += (tRX.current - cRX.current) * PARALLAX_EASE;
-          cRY.current += (tRY.current - cRY.current) * PARALLAX_EASE;
-
-          containerRef.current.style.transform =
-            `scale(${CONTAINER_SCALE}) ` +
-            `translate3d(${cPX.current.toFixed(2)}px,${cPY.current.toFixed(2)}px,0) ` +
-            `rotateX(${cRX.current.toFixed(3)}deg) rotateY(${cRY.current.toFixed(3)}deg)`;
-        }
+        containerRef.current.style.transform =
+          `scale(${CONTAINER_SCALE}) ` +
+          `translate3d(${cPX.current.toFixed(2)}px,${totalY.toFixed(2)}px,0) ` +
+          `rotateX(${cRX.current.toFixed(3)}deg) rotateY(${cRY.current.toFixed(3)}deg)`;
       }
 
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    onScroll();
+    updateScrollProgress();
     rafRef.current = requestAnimationFrame(animate);
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", updateScrollProgress, { passive: true });
+
+    const lenis = (window as unknown as { __lenis?: { on?: (event: string, cb: () => void) => void; off?: (event: string, cb: () => void) => void } }).__lenis;
+    if (lenis && typeof lenis.on === "function") {
+      lenis.on("scroll", updateScrollProgress);
+    }
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", updateScrollProgress);
+      if (lenis && typeof lenis.off === "function") {
+        lenis.off("scroll", updateScrollProgress);
+      }
       mq.removeEventListener("change", onMQChange);
-      video.removeEventListener("loadedmetadata", onMetadata);
     };
   }, []);
 
@@ -196,7 +152,7 @@ export function CinematicVideo({
     <div
       ref={containerRef}
       aria-hidden="true"
-      className={`fixed inset-0 w-screen h-screen overflow-hidden select-none pointer-events-none ${className}`}
+      className={`fixed inset-0 w-screen h-screen overflow-hidden select-none pointer-events-none will-change-transform ${className}`}
       style={{
         zIndex: 0,
         perspective: "1200px",
@@ -207,11 +163,17 @@ export function CinematicVideo({
       <video
         ref={videoRef}
         src={src}
-        playsInline
+        autoPlay
+        loop
         muted
+        playsInline
         preload="auto"
-        className="w-full h-full object-cover pointer-events-none select-none"
-        style={{ opacity: 1, visibility: "visible" }}
+        className="w-full h-full object-cover pointer-events-none select-none will-change-transform"
+        style={{
+          opacity: 0.9,
+          transform: "translateZ(0)",
+          backfaceVisibility: "hidden",
+        }}
       >
         <source src={src} type="video/mp4" />
       </video>

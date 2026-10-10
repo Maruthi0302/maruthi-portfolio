@@ -1,250 +1,200 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
-import { X } from "lucide-react";
-import { certifications, achievements } from "@/data/certifications";
+import { motion, useReducedMotion } from "framer-motion";
+import { Award, ChevronLeft, ChevronRight, ExternalLink, ShieldCheck, Trophy, FileText } from "lucide-react";
+
+interface CertificateItem {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  badge?: string;
+  credentialCode: string;
+  description: string;
+  isFeatured?: boolean;
+}
+
+const CERTIFICATES: CertificateItem[] = [
+  {
+    id: "ieee-hackathon",
+    title: "IEEE Research & Hackathon Winner",
+    issuer: "IEEE / Sustainability Hackathon",
+    date: "2024 – 2025",
+    badge: "🏆 HACKATHON WINNER",
+    credentialCode: "IEEE-VOICE-RAG-2025",
+    description:
+      "Co-authored research on low-latency voice AI retrieval workflows submitted to IEEE, and won sustainability hackathon recognition with The Giving Plate.",
+    isFeatured: true,
+  },
+  {
+    id: "cs50-python",
+    title: "CS50's Programming with Python",
+    issuer: "HarvardX",
+    date: "July 2025",
+    badge: "Verified Certificate",
+    credentialCode: "CS50P-HARVARDX-2025",
+    description:
+      "Comprehensive certification in algorithmic programming, object-oriented design, unit testing, and computational problem solving using Python.",
+    isFeatured: false,
+  },
+  {
+    id: "nptel-cloud",
+    title: "Cloud Computing Architecture",
+    issuer: "NPTEL",
+    date: "November 2024",
+    badge: "Elite Silver Certified",
+    credentialCode: "NPTEL-CC-SILVER-2024",
+    description:
+      "Advanced distributed computing systems, virtualization, cloud resource management, container orchestration, and serverless architectures.",
+    isFeatured: false,
+  },
+  {
+    id: "udemy-python",
+    title: "Complete Python Developer: Zero to Mastery",
+    issuer: "Udemy",
+    date: "August 2023",
+    badge: "Professional Mastery",
+    credentialCode: "UDM-PY-ZTM-2023",
+    description:
+      "Full-stack Python programming, asynchronous task queues, web scraping, automation scripts, and database integrations.",
+    isFeatured: false,
+  },
+];
 
 export function Certifications() {
   const shouldReduceMotion = useReducedMotion();
-  const [openId, setOpenId] = useState<string | null>(null);
-  const openCert = certifications.find((c) => c.id === openId) ?? null;
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 },
-    },
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev + 1) % CERTIFICATES.length);
   };
 
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 32 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-    },
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev - 1 + CERTIFICATES.length) % CERTIFICATES.length);
   };
 
   return (
-    <>
-      <section
-        id="certifications"
-        aria-label="Certifications"
-        className="relative z-20 w-full bg-[#030303] text-[#f5f5f5] py-28 sm:py-36 md:py-44 px-6 sm:px-12 lg:px-20 overflow-hidden border-t border-white/5"
-      >
-        {/* Watermark */}
+    <section
+      id="certifications"
+      aria-label="Certifications and Achievements"
+      className="relative z-20 w-full py-20 sm:py-28 px-4 sm:px-8 lg:px-16"
+    >
+      <div className="max-w-[1400px] mx-auto">
         <motion.div
-          aria-hidden="true"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="absolute top-8 right-2 sm:right-8 pointer-events-none select-none z-0"
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative rounded-3xl bg-[#090909]/95 backdrop-blur-xl border border-white/10 hover:border-[#c40024]/40 transition-colors duration-500 p-8 sm:p-12 lg:p-16 overflow-hidden shadow-2xl"
+          style={{
+            boxShadow: "0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(196, 0, 36, 0.08)",
+          }}
         >
-          <span
-            className="block font-[family-name:var(--font-bebas)] text-[28vw] sm:text-[20vw] md:text-[14vw] leading-none tracking-tight text-transparent"
-            style={{ WebkitTextStroke: "1.5px rgba(220, 20, 45, 0.15)" }}
-          >
-            06
-          </span>
-        </motion.div>
-
-        <div className="relative z-10 max-w-[1500px] mx-auto">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="space-y-16 sm:space-y-20"
-          >
-            {/* Header */}
-            <div className="space-y-6">
-              <motion.div variants={itemVariants} className="flex items-center gap-3">
-                <span className="flex items-center text-[#c40024]">
-                  <span className="w-8 sm:w-10 h-[1px] bg-[#c40024]" />
-                  <span className="text-[10px] -ml-1">▸</span>
-                </span>
-                <p className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.24em] uppercase text-[#a3a3a3]">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-[2px] bg-[#c40024]" />
+                <p className="text-xs font-mono font-medium tracking-[0.25em] uppercase text-[#c40024]">
                   06 / CERTIFICATIONS
                 </p>
-              </motion.div>
-
-              <motion.h2
-                variants={itemVariants}
-                className="font-[family-name:var(--font-bebas)] text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] tracking-tight uppercase leading-[0.92]"
-              >
-                <span className="block text-white">VERIFIED</span>
-                <span className="block bg-gradient-to-r from-white via-[#f0f0f0] to-[#c40024] bg-clip-text text-transparent">
-                  CREDENTIALS
-                  <span
-                    className="text-[#e0002a] inline-block ml-0.5"
-                    style={{ textShadow: "0 0 25px rgba(224, 0, 42, 1), 0 0 50px rgba(224, 0, 42, 0.6)" }}
-                  >
-                    .
-                  </span>
-                </span>
-              </motion.h2>
+              </div>
+              <h2 className="font-[family-name:var(--font-bebas)] text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-none">
+                HONORS &amp; <span className="text-[#e0002a]">CERTIFICATIONS</span>
+              </h2>
             </div>
 
-            {/* Certification cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-              {certifications.map((cert, index) => (
-                <motion.button
-                  key={cert.id}
-                  variants={itemVariants}
-                  onClick={() => setOpenId(cert.id)}
-                  className="group relative text-left p-7 rounded bg-[#090909] border border-white/5 hover:border-[#c40024]/40 transition-all duration-300 space-y-5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c40024]"
-                >
-                  {/* Top beam */}
-                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c40024]/70 to-transparent" />
-
-                  {/* Index */}
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="font-[family-name:var(--font-bebas)] text-4xl text-transparent leading-none"
-                      style={{ WebkitTextStroke: "1px rgba(196, 0, 36, 0.45)" }}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    {cert.badge && (
-                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border border-[#c40024]/40 text-[#c40024]">
-                        {cert.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <h3 className="font-[family-name:var(--font-oswald)] text-lg sm:text-xl font-medium uppercase tracking-wide text-white leading-tight group-hover:text-[#f5f5f5] transition-colors">
-                      {cert.title}
-                    </h3>
-                    <p className="text-[#c40024] text-sm font-mono font-medium">{cert.issuer}</p>
-                    <p className="text-[11px] font-mono text-[#737373] tracking-wider">{cert.date}</p>
-                  </div>
-
-                  {cert.credentialCode && (
-                    <div className="pt-1">
-                      <span className="text-[10px] font-mono text-[#555] tracking-widest">
-                        ID: {cert.credentialCode}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#737373] group-hover:text-[#a3a3a3] transition-colors">
-                    <span>VIEW DETAILS</span>
-                    <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-
-            {/* Achievements */}
-            <motion.div variants={itemVariants} className="pt-8 border-t border-white/5 space-y-8">
-              <div className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#c40024]" />
-                <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#737373]">
-                  NOTABLE ACHIEVEMENTS
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                {achievements.map((a) => (
-                  <div
-                    key={a.id}
-                    className="p-6 rounded bg-[#090909] border border-white/5 space-y-3"
-                  >
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#c40024]">
-                      {a.label}
-                    </span>
-                    <p className="text-sm text-[#a3a3a3] leading-relaxed">{a.description}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Detail Modal */}
-      <AnimatePresence>
-        {openCert && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-            onClick={() => setOpenId(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.95, y: shouldReduceMotion ? 0 : 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-lg w-full bg-[#090909] border border-white/10 rounded overflow-hidden p-8 space-y-6"
-            >
-              {/* Top beam */}
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c40024] to-transparent" />
-
+            {/* Prev/Next Buttons */}
+            <div className="flex items-center gap-3">
               <button
-                onClick={() => setOpenId(null)}
-                aria-label="Close modal"
-                className="absolute top-4 right-4 text-[#737373] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#c40024] rounded"
+                onClick={prevSlide}
+                aria-label="Previous Certificate"
+                className="p-3 rounded-full bg-white/[0.04] hover:bg-[#c40024]/20 border border-white/10 hover:border-[#c40024] text-white transition-all"
               >
-                <X className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
+              <button
+                onClick={nextSlide}
+                aria-label="Next Certificate"
+                className="p-3 rounded-full bg-white/[0.04] hover:bg-[#c40024]/20 border border-white/10 hover:border-[#c40024] text-white transition-all"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-              <div className="space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#c40024]">
-                  {openCert.issuer}
-                </span>
-                <h3 className="font-[family-name:var(--font-oswald)] text-2xl font-medium uppercase tracking-wide text-white">
-                  {openCert.title}
-                </h3>
-                {openCert.badge && (
-                  <span className="inline-block mt-1 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border border-[#c40024]/40 text-[#c40024]">
-                    {openCert.badge}
-                  </span>
-                )}
-              </div>
-
-              <div className="h-[1px] bg-white/5" />
-
-              <div className="space-y-3 text-sm font-mono text-[#737373]">
-                <div className="flex justify-between">
-                  <span className="uppercase tracking-wider text-[10px]">DATE</span>
-                  <span className="text-[#a3a3a3]">{openCert.date}</span>
-                </div>
-                {openCert.credentialCode && (
-                  <div className="flex justify-between">
-                    <span className="uppercase tracking-wider text-[10px]">CREDENTIAL ID</span>
-                    <span className="text-[#a3a3a3]">{openCert.credentialCode}</span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span className="uppercase tracking-wider text-[10px]">STATUS</span>
-                  <span className="text-[#c40024]">VERIFIED</span>
-                </div>
-              </div>
-
-              {openCert.credentialUrl && (
-                <a
-                  href={openCert.credentialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[11px] font-mono tracking-[0.2em] uppercase text-[#c40024] hover:text-[#e0002a] transition-colors"
+          {/* 3D Perspective Card Carousel */}
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            {CERTIFICATES.slice(0, 3).map((cert, idx) => {
+              const isCenter = idx === 0 || cert.isFeatured;
+              return (
+                <div
+                  key={cert.id}
+                  className={`relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-500 ${
+                    isCenter
+                      ? "bg-gradient-to-b from-[#181818] to-[#0d0d0d] border-2 border-[#e0002a] shadow-[0_0_40px_rgba(224,0,42,0.3)] md:scale-105 z-10"
+                      : "bg-[#0c0c0c] border border-white/10 opacity-90 hover:opacity-100"
+                  }`}
+                  style={{ minHeight: "360px" }}
                 >
-                  <span>VERIFY CREDENTIAL</span>
-                  <span>→</span>
-                </a>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+                  <div className="space-y-4">
+                    {/* Badge */}
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider ${
+                          isCenter
+                            ? "bg-[#e0002a] text-white shadow-[0_0_15px_#e0002a]"
+                            : "bg-white/[0.05] text-[#a0a0a0] border border-white/10"
+                        }`}
+                      >
+                        {cert.badge || "Verified"}
+                      </span>
+                      <Award className={`w-6 h-6 ${isCenter ? "text-[#e0002a]" : "text-[#777]"}`} />
+                    </div>
+
+                    <div className="space-y-1.5 pt-2">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white font-[family-name:var(--font-oswald)] tracking-wide">
+                        {cert.title}
+                      </h3>
+                      <p className="text-sm font-semibold text-[#e0002a]">
+                        {cert.issuer}
+                      </p>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-[#999] leading-relaxed">
+                      {cert.description}
+                    </p>
+                  </div>
+
+                  {/* Footer info */}
+                  <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-[#777]">
+                    <span>ID: {cert.credentialCode}</span>
+                    <span>{cert.date}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Carousel Pagination Indicator Dots */}
+          <div className="flex items-center justify-center gap-2 pt-8">
+            {CERTIFICATES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === activeIndex
+                    ? "w-8 bg-[#e0002a] shadow-[0_0_10px_#e0002a]"
+                    : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 

@@ -1,203 +1,108 @@
 "use client";
 
 import React from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-
-const CAPABILITIES = [
-  { id: "01", label: "FULL-STACK" },
-  { id: "02", label: "AI SYSTEMS" },
-  { id: "03", label: "RAG / LLM" },
-  { id: "04", label: "BACKEND" },
-  { id: "05", label: "FRONTEND" },
-  { id: "06", label: "PRODUCT ENGINEERING" },
-] as const;
+import Link from "next/link";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export function About() {
   const shouldReduceMotion = useReducedMotion();
-
-  // Animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.12,
-        delayChildren: shouldReduceMotion ? 0 : 0.1,
-      },
-    },
-  };
-
-  const itemFadeUp: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-  };
-
-  const watermarkVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 1.4,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const labelVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
 
   return (
     <section
       id="about"
       aria-label="About Maruthi"
-      className="relative z-20 w-full bg-[#030303] text-[#f5f5f5] py-28 sm:py-36 md:py-44 px-6 sm:px-12 lg:px-20 overflow-hidden border-t border-white/5 select-none"
+      className="relative z-20 w-full py-20 sm:py-28 px-4 sm:px-8 lg:px-16"
     >
-      {/* 1. TYPOGRAPHIC WATERMARK: "02" Crimson Outline */}
-      <motion.div
-        aria-hidden="true"
-        variants={watermarkVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="absolute top-12 right-2 sm:right-8 lg:right-16 pointer-events-none select-none z-0 overflow-hidden"
-      >
-        <span
-          className="block font-[family-name:var(--font-bebas)] text-[28vw] sm:text-[22vw] md:text-[18vw] leading-none tracking-tight text-transparent select-none"
+      <div className="max-w-[1400px] mx-auto">
+        {/* Solid Dark Panel with subtle red glow border */}
+        <motion.div
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative rounded-3xl bg-[#090909]/95 backdrop-blur-xl border border-white/10 hover:border-[#c40024]/40 transition-colors duration-500 p-8 sm:p-12 lg:p-16 overflow-hidden shadow-2xl"
           style={{
-            WebkitTextStroke: "1.5px rgba(220, 20, 45, 0.22)",
-            textShadow: "0 0 50px rgba(196, 0, 36, 0.12)",
+            boxShadow: "0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(196, 0, 36, 0.08)",
           }}
         >
-          02
-        </span>
-      </motion.div>
+          {/* Subtle Ambient Corner Glow */}
+          <div
+            aria-hidden="true"
+            className="absolute top-0 right-0 w-96 h-96 bg-[#c40024]/10 rounded-full blur-[100px] pointer-events-none"
+          />
 
-      <div className="relative z-10 max-w-[1500px] mx-auto">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="space-y-16 sm:space-y-20 lg:space-y-24"
-        >
-          {/* 2. SECTION HEADER */}
-          <div className="space-y-4 max-w-xl">
-            {/* Eyebrow badge matching Hero structure */}
-            <motion.div variants={itemFadeUp} className="flex items-center gap-3">
-              <span className="flex items-center text-[#c40024]">
-                <span className="w-8 sm:w-10 h-[1px] bg-[#c40024]" />
-                <span className="text-[10px] -ml-1">▸</span>
-              </span>
-              <p className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.24em] uppercase text-[#a3a3a3]">
-                02 / ABOUT
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Content (7 cols) */}
+            <div className="lg:col-span-7 space-y-6 sm:space-y-8">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-[2px] bg-[#c40024]" />
+                <p className="text-xs font-mono font-medium tracking-[0.25em] uppercase text-[#c40024]">
+                  02 / ABOUT
+                </p>
+              </div>
+
+              {/* Headline */}
+              <h2 className="font-[family-name:var(--font-bebas)] text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-none">
+                ABOUT <span className="text-[#e0002a]">ME</span>
+              </h2>
+
+              {/* Bio Paragraph */}
+              <p className="text-base sm:text-lg text-[#b0b0b0] font-normal leading-relaxed">
+                I&apos;m <span className="text-white font-semibold">Maruthi</span>, a Full-Stack and AI Engineer passionate about building impactful products. I enjoy working at the intersection of modern web technologies and artificial intelligence, turning complex problems into elegant, user-centric solutions.
               </p>
-            </motion.div>
 
-            {/* Large Section Heading */}
-            <motion.h2
-              variants={itemFadeUp}
-              className="font-[family-name:var(--font-bebas)] text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] tracking-tight uppercase leading-[0.92]"
-            >
-              <span className="block text-white">ABOUT</span>
-              <span className="block bg-gradient-to-r from-white via-[#f0f0f0] to-[#c40024] bg-clip-text text-transparent">
-                ME
-                <span
-                  className="text-[#e0002a] inline-block ml-0.5"
-                  style={{
-                    textShadow:
-                      "0 0 25px rgba(224, 0, 42, 1), 0 0 50px rgba(224, 0, 42, 0.6)",
-                  }}
+              <p className="text-sm sm:text-base text-[#8e8e8e] leading-relaxed">
+                Specialized in architecting high-throughput voice processing pipelines, semantic vector retrieval engines, and production-ready microservices that bridge complex AI backends with frictionless frontend interfaces.
+              </p>
+
+              {/* Action Button */}
+              <div className="pt-2">
+                <Link
+                  href="#experience"
+                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 hover:border-[#c40024] bg-white/[0.02] hover:bg-[#c40024]/15 text-white text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(196,0,36,0.35)]"
                 >
-                  .
-                </span>
-              </span>
-            </motion.h2>
-          </div>
+                  <span>MY JOURNEY</span>
+                  <ArrowRight className="w-4 h-4 text-[#c40024] group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
 
-          {/* 3. TWO-COLUMN EDITORIAL LAYOUT */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
-            {/* Left Column: Bold statement */}
-            <motion.div
-              variants={itemFadeUp}
-              className="lg:col-span-6 space-y-4"
-            >
-              <h3 className="font-[family-name:var(--font-oswald)] text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-medium uppercase tracking-tight text-white leading-[1.15]">
-                Building at the intersection of product engineering and AI.
-              </h3>
-              <div className="w-12 h-[2px] bg-[#c40024]/60" />
-            </motion.div>
+            {/* Right Portrait Column (5 cols) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
+              <div className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#151515] to-[#0a0a0a] p-2 group shadow-2xl">
+                {/* Glowing red back rim light */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-tr from-[#c40024]/30 via-transparent to-[#e0002a]/20 opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                />
 
-            {/* Right Column: Confident, factual professional context */}
-            <motion.div
-              variants={itemFadeUp}
-              className="lg:col-span-6 space-y-6 text-[#a3a3a3] text-sm sm:text-base leading-relaxed font-normal"
-            >
-              <p className="text-[#f5f5f5] text-base sm:text-lg font-medium leading-relaxed">
-                I build full-stack products and AI-powered systems, working
-                across the interface, backend, APIs, data and intelligent
-                application layers.
-              </p>
-              <p>
-                My work spans modern frontend engineering with responsive,
-                performant interfaces, backed by scalable backend services and
-                robust API design. I integrate LLMs, vector search, and RAG
-                pipelines into real-world software workflows where precision,
-                speed, and reliability matter.
-              </p>
-              <p>
-                Rather than treating AI as isolated demos or surface-level
-                wrappers, I focus on building cohesive, end-to-end products that
-                solve real operational challenges with clean architecture and
-                resilient engineering standards.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* 4. TECHNICAL IDENTITY / CAPABILITIES */}
-          <div className="pt-8 border-t border-white/5 space-y-6">
-            <motion.div variants={itemFadeUp} className="flex items-center gap-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c40024]" />
-              <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#737373]">
-                CORE CAPABILITIES
-              </span>
-            </motion.div>
-
-            <motion.div
-              variants={containerVariants}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
-            >
-              {CAPABILITIES.map((cap) => (
-                <motion.div
-                  key={cap.id}
-                  variants={labelVariants}
-                  className="group relative p-4 rounded bg-[#090909] border border-white/5 hover:border-[#c40024]/40 transition-colors duration-200 flex flex-col justify-between min-h-[92px]"
-                >
-                  <div className="flex items-center justify-between text-[10px] font-mono text-[#737373] group-hover:text-[#c40024] transition-colors">
-                    <span>{cap.id}</span>
-                    <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-[#c40024] transition-colors" />
+                <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0e0e0e] flex items-center justify-center">
+                  {/* Photo or Styled Avatar Backdrop */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#c40024]/20 via-[#0a0a0a] to-[#050505]" />
+                  
+                  {/* Subject Silhouette / Photo Container */}
+                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full border-2 border-[#c40024]/60 p-1 shadow-[0_0_30px_rgba(196,0,36,0.35)] mb-4 overflow-hidden bg-[#1a1a1a]">
+                      <div className="w-full h-full rounded-full bg-gradient-to-br from-[#2a2a2a] via-[#151515] to-[#0a0a0a] flex items-center justify-center text-3xl font-black text-white font-[family-name:var(--font-bebas)]">
+                        ATM
+                      </div>
+                    </div>
+                    <span className="text-lg font-bold text-white tracking-wider font-[family-name:var(--font-oswald)] uppercase">
+                      Adhul Thiruven Maruthi
+                    </span>
+                    <span className="text-xs text-[#c40024] font-mono tracking-widest uppercase mt-1">
+                      Full-Stack &amp; AI Engineer
+                    </span>
                   </div>
-                  <span className="font-[family-name:var(--font-oswald)] text-xs sm:text-sm tracking-wider uppercase text-white font-medium group-hover:text-white transition-colors pt-2">
-                    {cap.label}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                  {/* Red bottom accent border */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#e0002a] to-transparent" />
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

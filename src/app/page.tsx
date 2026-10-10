@@ -1,5 +1,6 @@
 import CinematicVideo from "@/components/cinematic/CinematicVideo";
 import CinematicOverlay from "@/components/cinematic/CinematicOverlay";
+import CinematicCursorGlow from "@/components/cinematic/CinematicCursorGlow";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -12,21 +13,22 @@ import ScrollProgress from "@/components/layout/ScrollProgress";
 
 export default function Home() {
   return (
-    <>
-      {/* ── Cinematic World ─────────────────────────────────────────────────── */}
-      {/* Fixed behind everything. One video element, never duplicated. */}
+    <div className="portfolio-world">
+      {/* ── Cinematic Layer ──────────────────────────────────────────────────── */}
+      {/* Fixed behind the entire portfolio world. ONE video element only.      */}
+      {/* position: fixed; inset: 0; z-index: 0                                 */}
       <CinematicVideo src="/video/portfolio-background.mp4" />
       <CinematicOverlay />
+      <CinematicCursorGlow />
 
       {/* ── Navigation ──────────────────────────────────────────────────────── */}
       <Navbar />
 
-      {/* ── Scroll Content ──────────────────────────────────────────────────── */}
+      {/* ── Portfolio Content ────────────────────────────────────────────────── */}
       {/*
-        The Hero sits on top of the cinematic video (transparent bg).
-        All subsequent sections use solid dark backgrounds (#030303 / #050505)
-        so the video naturally only shows through the hero, creating an
-        intentional cinematic-to-editorial scene transition.
+        Sections have semi-transparent / translucent backgrounds (rgba).
+        The cinematic video remains visually present throughout the page
+        as content scrolls over it — this IS the intended experience.
       */}
       <main className="relative z-20 text-[#f5f5f5]">
         <Hero />
@@ -40,6 +42,6 @@ export default function Home() {
 
       {/* ── Scroll Progress Indicator ──────────────────────────────────────── */}
       <ScrollProgress />
-    </>
+    </div>
   );
 }

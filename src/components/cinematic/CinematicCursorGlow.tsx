@@ -18,7 +18,7 @@ export function CinematicCursorGlow() {
   return (
     <div
       aria-hidden="true"
-      className="fixed pointer-events-none -z-5 transition-transform duration-300 ease-out"
+      className="fixed pointer-events-none z-[5] transition-transform duration-300 ease-out"
       style={{
         transform: `translate3d(${x - 300}px, ${y - 300}px, 0)`,
         width: 600,

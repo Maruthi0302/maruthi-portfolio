@@ -172,7 +172,7 @@ export function Hero() {
             data-magnetic
             onMouseMove={handleMagneticMove}
             onMouseLeave={handleMagneticLeave}
-            className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded border border-white/20 hover:border-white/40 bg-black/30 backdrop-blur-sm text-white text-xs font-bold tracking-[0.16em] uppercase transition-all duration-200"
+            className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded border border-white/20 hover:border-white/40 bg-black/60 text-white text-xs font-bold tracking-[0.16em] uppercase transition-all duration-200"
           >
             <span>DOWNLOAD RESUME</span>
             <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-200 text-[#a3a3a3] group-hover:text-white" />

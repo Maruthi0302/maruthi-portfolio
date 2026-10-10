@@ -1,214 +1,213 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { experiences } from "@/data/experience";
+import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Building2, Calendar, MapPin, ArrowDown } from "lucide-react";
 
-const FILTERS = ["All", "Work Experience"] as const;
-type Filter = (typeof FILTERS)[number];
+interface TimelineItem {
+  id: string;
+  number: string;
+  role: string;
+  company: string;
+  period: string;
+  location: string;
+  description: string[];
+}
+
+const EXPERIENCES: TimelineItem[] = [
+  {
+    id: "alfredworks",
+    number: "01",
+    role: "SOFTWARE ENGINEER",
+    company: "AlfredWorks AI",
+    period: "Sept 2025 – Present",
+    location: "On-site",
+    description: [
+      "Built real-time processing pipelines for AI-generated workflow outputs, integrating multiple services and external APIs into production application flows.",
+      "Implemented full-stack features using React.js and FastAPI, connecting user-facing workflows with backend services and AI processing components.",
+      "Worked on modular microservice architectures and Docker-based deployments, improving service isolation, maintainability, and deployment consistency.",
+      "Collaborated with the engineering team through Git-based development, code reviews, sprint planning, debugging, and iterative production releases.",
+    ],
+  },
+  {
+    id: "turtil",
+    number: "02",
+    role: "BACKEND DEVELOPER INTERN",
+    company: "Turtil.co",
+    period: "May 2025 – June 2025",
+    location: "Hybrid",
+    description: [
+      "Built a containerized resume-job matching microservice using Python, FastAPI, and Docker for scalable backend deployment.",
+      "Designed backend processing pipelines for structured and unstructured resume-job data using semantic skill matching workflows.",
+      "Developed REST APIs for candidate scoring, recommendation generation, and personalized learning path workflows.",
+      "Implemented modular service architecture to improve deployment consistency and maintainability.",
+    ],
+  },
+];
+
+const MANTRAS = ["BUILD", "DEVELOP", "INNOVATE", "REPEAT"] as const;
 
 export function Experience() {
   const shouldReduceMotion = useReducedMotion();
-  const [active, setActive] = useState<Filter>("All");
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: shouldReduceMotion ? 0 : 0.15 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 32 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
-
-  const watermarkVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1.4, ease: "easeOut" } },
-  };
-
-  const filtered = active === "All" ? experiences : experiences.filter((e) => e.type === "work");
 
   return (
     <section
       id="experience"
       aria-label="Professional Experience"
-      className="relative z-20 w-full bg-[#050505] text-[#f5f5f5] py-28 sm:py-36 md:py-44 px-6 sm:px-12 lg:px-20 overflow-hidden border-t border-white/5"
+      className="relative z-20 w-full min-h-screen py-24 sm:py-32 md:py-40 px-6 sm:px-12 lg:px-20 overflow-hidden select-none"
     >
-      {/* Watermark */}
-      <motion.div
-        aria-hidden="true"
-        variants={watermarkVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="absolute top-8 left-0 pointer-events-none select-none z-0"
-      >
-        <span
-          className="block font-[family-name:var(--font-bebas)] text-[30vw] sm:text-[22vw] md:text-[16vw] leading-none tracking-tight text-transparent"
-          style={{
-            WebkitTextStroke: "1.5px rgba(220, 20, 45, 0.18)",
-          }}
-        >
-          03
-        </span>
-      </motion.div>
+      <div className="max-w-[1700px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+          
+          {/* ── LEFT COLUMN: Pinned / Sticky Section Header ──────────────────── */}
+          <div className="lg:col-span-5 relative space-y-6 lg:sticky lg:top-32">
+            {/* Left Content */}
+            <div className="relative z-10 space-y-6">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-[2px] bg-[#c40024]" />
+                <p className="text-xs font-mono font-medium tracking-[0.24em] uppercase text-[#c40024]">
+                  03 / EXPERIENCE
+                </p>
+              </div>
 
-      <div className="relative z-10 max-w-[1500px] mx-auto">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="space-y-16 sm:space-y-20"
-        >
-          {/* Header */}
-          <div className="space-y-8">
-            <motion.div variants={itemVariants} className="flex items-center gap-3">
-              <span className="flex items-center text-[#c40024]">
-                <span className="w-8 sm:w-10 h-[1px] bg-[#c40024]" />
-                <span className="text-[10px] -ml-1">▸</span>
-              </span>
-              <p className="text-[11px] sm:text-xs font-mono font-medium tracking-[0.24em] uppercase text-[#a3a3a3]">
-                03 / EXPERIENCE
-              </p>
-            </motion.div>
-
-            <motion.h2
-              variants={itemVariants}
-              className="font-[family-name:var(--font-bebas)] text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] tracking-tight uppercase leading-[0.92]"
-            >
-              <span className="block text-white">PROFESSIONAL</span>
-              <span className="block bg-gradient-to-r from-white via-[#f0f0f0] to-[#c40024] bg-clip-text text-transparent">
-                JOURNEY
-                <span
-                  className="text-[#e0002a] inline-block ml-0.5"
-                  style={{ textShadow: "0 0 25px rgba(224, 0, 42, 1), 0 0 50px rgba(224, 0, 42, 0.6)" }}
-                >
-                  .
+              {/* Main Headline */}
+              <h2 className="font-[family-name:var(--font-bebas)] text-6xl sm:text-7xl lg:text-8xl tracking-tight uppercase leading-[0.92]">
+                <span className="block text-white">PROFESSIONAL</span>
+                <span className="block text-[#e0002a]">
+                  JOURNEY
+                  <span
+                    className="text-[#e0002a] inline-block ml-0.5"
+                    style={{
+                      textShadow: "0 0 30px rgba(224, 0, 42, 0.9)",
+                    }}
+                  >
+                    .
+                  </span>
                 </span>
-              </span>
-            </motion.h2>
+              </h2>
 
-            {/* Filter pills */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-2">
-              {FILTERS.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setActive(f)}
-                  className={`px-4 py-1.5 rounded-full text-[11px] font-mono tracking-[0.2em] uppercase transition-all duration-200 border ${
-                    active === f
-                      ? "bg-[#c40024] border-[#c40024] text-white"
-                      : "border-white/10 text-[#8e8e8e] hover:border-white/25 hover:text-white"
-                  }`}
-                >
-                  {f}
-                </button>
-              ))}
-            </motion.div>
+              {/* Subtitle paragraph */}
+              <p className="text-sm sm:text-base text-[#a3a3a3] font-normal leading-relaxed max-w-md">
+                A timeline of the roles, teams, and systems I&apos;ve worked on — building products, scaling backend services, and working with AI.
+              </p>
+
+              {/* Vertical Mantra list */}
+              <div className="pt-6 border-l-2 border-white/10 pl-4 space-y-2">
+                {MANTRAS.map((mantra) => (
+                  <span
+                    key={mantra}
+                    className="block text-[11px] font-mono tracking-[0.28em] text-[#666] uppercase hover:text-[#c40024] transition-colors"
+                  >
+                    {mantra}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Timeline */}
-          <div className="relative">
-            {/* Vertical spine — desktop only */}
+          {/* ── RIGHT COLUMN: Timeline Beam & Chamfered Cards ────────────────── */}
+          <div className="lg:col-span-7 relative pl-8 sm:pl-16 lg:pl-12">
+            
+            {/* Vertical Red Luminous Line Beam */}
             <div
               aria-hidden="true"
-              className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-[#c40024]/60 via-[#c40024]/20 to-transparent"
+              className="absolute left-[3px] sm:left-[19px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-[#e0002a] via-[#c40024] to-[#e0002a]/30"
+              style={{
+                boxShadow: "0 0 16px rgba(224, 0, 42, 0.75)",
+              }}
             />
 
-            <div className="space-y-12 lg:space-y-0">
-              {filtered.map((exp, index) => {
-                const isLeft = index % 2 === 0;
-                return (
-                  <motion.div
-                    key={exp.id}
-                    variants={itemVariants}
-                    className="relative lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start lg:mb-16"
+            {/* Timeline Cards Container */}
+            <div className="space-y-12 sm:space-y-16">
+              {EXPERIENCES.map((item, idx) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.2 }}
+                  className="relative group"
+                >
+                  {/* Timeline Index Number (e.g. 01, 02) */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute -left-12 sm:-left-16 top-3 text-xs sm:text-sm font-mono font-medium text-[#737373] select-none"
                   >
-                    {/* Spine Node */}
+                    {item.number}
+                  </span>
+
+                  {/* Glowing Node Core */}
+                  <div
+                    className="absolute -left-[37px] sm:-left-[53px] top-3.5 w-5 h-5 rounded-full bg-[#050505] border-2 border-[#e0002a] flex items-center justify-center transition-transform duration-300 group-hover:scale-125"
+                    style={{
+                      boxShadow: "0 0 20px rgba(224, 0, 42, 0.9), inset 0 0 8px rgba(224, 0, 42, 0.6)",
+                    }}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_#ffffff]" />
+                  </div>
+
+                  {/* Horizontal Connector Branch Line */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute -left-4 sm:-left-7 top-6 w-4 sm:w-7 h-[1px] bg-[#c40024]/60"
+                  />
+
+                  {/* Chamfered / High-Tech Beveled Card Box */}
+                  <div
+                    className="relative rounded-2xl bg-[#090909]/80 backdrop-blur-xl border border-white/10 group-hover:border-[#c40024]/60 transition-all duration-300 p-6 sm:p-8 space-y-6 shadow-2xl"
+                    style={{
+                      boxShadow: "0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(196, 0, 36, 0.06)",
+                    }}
+                  >
+                    {/* Corner Accent Glow */}
                     <div
                       aria-hidden="true"
-                      className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-6 flex-col items-center z-10"
-                    >
-                      <div className="w-3 h-3 rounded-full bg-[#c40024] shadow-[0_0_12px_rgba(196,0,36,0.9)]" />
-                    </div>
+                      className="absolute top-0 right-0 w-32 h-32 bg-[#c40024]/10 rounded-full blur-[50px] pointer-events-none group-hover:bg-[#c40024]/20 transition-all"
+                    />
 
-                    {/* Card — alternates left/right on desktop */}
-                    <div className={`${isLeft ? "lg:col-start-1" : "lg:col-start-2"} lg:col-span-1`}>
-                      <div className="group relative p-7 sm:p-8 rounded bg-[#090909] border border-white/5 hover:border-[#c40024]/30 transition-colors duration-300 space-y-5">
-                        {/* Top red laser beam */}
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c40024]/60 to-transparent rounded-t" />
+                    {/* Card Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 border-b border-white/5 pb-5">
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-mono font-bold tracking-[0.2em] text-[#e0002a] uppercase block">
+                          {item.role}
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white font-[family-name:var(--font-oswald)] tracking-wide group-hover:text-white transition-colors">
+                          {item.company}
+                        </h3>
+                      </div>
 
-                        {/* Role & Company */}
-                        <div className="space-y-1">
-                          <h3 className="font-[family-name:var(--font-oswald)] text-xl sm:text-2xl font-medium uppercase tracking-wide text-white">
-                            {exp.role}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[#c40024] text-sm font-mono font-medium">
-                              {exp.company}
-                            </span>
-                            {exp.location && (
-                              <>
-                                <span className="text-white/20">·</span>
-                                <span className="text-[11px] text-[#737373] uppercase tracking-wider">
-                                  {exp.location}
-                                </span>
-                              </>
-                            )}
-                          </div>
-                          <span className="inline-block text-[11px] font-mono text-[#8e8e8e] tracking-wider mt-1">
-                            {exp.period}
-                          </span>
-                        </div>
-
-                        {/* Divider */}
-                        <div className="h-[1px] bg-white/5" />
-
-                        {/* Bullets */}
-                        <ul className="space-y-2.5">
-                          {exp.description.map((bullet, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-[#a3a3a3] leading-relaxed">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#c40024]/70 mt-[6px] shrink-0" />
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-
-                        {/* Tech tags */}
-                        {exp.technologies && exp.technologies.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 pt-1">
-                            {exp.technologies.map((tech) => (
-                              <span
-                                key={tech}
-                                className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-white/[0.04] border border-white/5 text-[#8e8e8e]"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                      <div className="flex flex-col sm:items-end gap-1.5">
+                        <span className="text-xs font-mono text-[#a3a3a3] tracking-wider">
+                          {item.period}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8e8e8e] bg-white/[0.04] px-3 py-1 rounded-full border border-white/10 w-fit">
+                          <Building2 className="w-3 h-3 text-[#c40024]" />
+                          <span>{item.location}</span>
+                        </span>
                       </div>
                     </div>
 
-                    {/* Spacer for opposite column (desktop alternating layout) */}
-                    {isLeft ? (
-                      <div className="hidden lg:block lg:col-start-2" />
-                    ) : (
-                      <div className="hidden lg:block lg:col-start-1 lg:row-start-1" />
-                    )}
-                  </motion.div>
-                );
-              })}
+                    {/* Bullet Points */}
+                    <ul className="space-y-3">
+                      {item.description.map((point, pIdx) => (
+                        <li key={pIdx} className="flex items-start gap-3 text-xs sm:text-sm text-[#b0b0b0] leading-relaxed">
+                          <span
+                            className="w-1.5 h-1.5 rounded-full bg-[#e0002a] mt-1.5 flex-shrink-0"
+                            style={{
+                              boxShadow: "0 0 8px rgba(224, 0, 42, 0.8)",
+                            }}
+                          />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

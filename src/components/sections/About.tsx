@@ -2,9 +2,24 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/constants";
+
+const SNAPSHOT_ITEMS = [
+  { label: "CURRENT ROLE", value: "Software Engineer @ AlfredWorks AI" },
+  { label: "CORE FOCUS", value: "Real-Time Voice AI & Scalable Microservices" },
+  { label: "PRIMARY STACK", value: "FastAPI, Python, Next.js, LiveKit, Docker" },
+  { label: "RESEARCH", value: "IEEE Co-Author (Low-Latency Voice RAG)" },
+  { label: "ACCOLADES", value: "Hackathon Winner (The Giving Plate)" },
+  { label: "LOCATION", value: "India • Remote & Hybrid Friendly" },
+];
+
+const HIGHLIGHT_POINTS = [
+  "Architecting sub-second streaming audio workflows with LiveKit & WebSockets",
+  "Developing dense semantic search and vector retrieval pipelines with ChromaDB",
+  "Deploying containerized microservices with FastAPI, Python, and Docker",
+];
 
 export function About() {
   const shouldReduceMotion = useReducedMotion();
@@ -13,96 +28,136 @@ export function About() {
     <section
       id="about"
       aria-label="About Maruthi"
-      className="relative z-20 w-full py-20 sm:py-28 px-4 sm:px-8 lg:px-16"
+      className="relative z-20 w-full py-20 sm:py-28 lg:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden select-none"
     >
       <div className="max-w-[1400px] mx-auto">
-        {/* Solid Dark Panel with subtle red glow border */}
         <motion.div
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative rounded-3xl bg-[#090909]/95 backdrop-blur-xl border border-white/10 hover:border-[#c40024]/40 transition-colors duration-500 p-8 sm:p-12 lg:p-16 overflow-hidden shadow-2xl"
+          className="relative rounded-3xl bg-[#090909]/80 backdrop-blur-xl border border-white/10 hover:border-[#c40024]/40 transition-colors duration-500 p-8 sm:p-12 lg:p-16 overflow-hidden shadow-2xl"
           style={{
-            boxShadow: "0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(196, 0, 36, 0.08)",
+            boxShadow: "0 0 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(196, 0, 36, 0.05)",
           }}
         >
-          {/* Subtle Ambient Corner Glow */}
+          {/* Subtle Ambient Red Glow */}
           <div
             aria-hidden="true"
             className="absolute top-0 right-0 w-96 h-96 bg-[#c40024]/10 rounded-full blur-[100px] pointer-events-none"
           />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left Content (7 cols) */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+            
+            {/* ── LEFT COLUMN: Narrative & Highlights (7 cols) ─────────── */}
             <div className="lg:col-span-7 space-y-6 sm:space-y-8">
               {/* Eyebrow */}
               <div className="flex items-center gap-3">
-                <span className="w-6 h-[2px] bg-[#c40024]" />
-                <p className="text-xs font-mono font-medium tracking-[0.25em] uppercase text-[#c40024]">
-                  02 / ABOUT
+                <span className="w-8 h-[2px] bg-[#c40024]" />
+                <p className="text-xs font-mono font-medium tracking-[0.24em] uppercase text-[#c40024]">
+                  02 / ABOUT ME
                 </p>
               </div>
 
               {/* Headline */}
-              <h2 className="font-[family-name:var(--font-bebas)] text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-none">
-                ABOUT <span className="text-[#e0002a]">ME</span>
+              <h2 className="font-[family-name:var(--font-bebas)] text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-[0.92]">
+                BUILDING AT THE INTERSECTION OF{" "}
+                <span className="text-[#e0002a]">AI &amp; SYSTEMS.</span>
               </h2>
 
-              {/* Bio Paragraph */}
-              <p className="text-base sm:text-lg text-[#b0b0b0] font-normal leading-relaxed">
-                I&apos;m <span className="text-white font-semibold">Maruthi</span>, a Full-Stack and AI Engineer passionate about building impactful products. I enjoy working at the intersection of modern web technologies and artificial intelligence, turning complex problems into elegant, user-centric solutions.
-              </p>
+              {/* Bio Narrative */}
+              <div className="space-y-4 text-sm sm:text-base text-[#a3a3a3] font-normal leading-relaxed">
+                <p className="text-base sm:text-lg text-[#e0e0e0]">
+                  I&apos;m <span className="text-white font-semibold">Maruthi</span> (Adhul Thiruven Maruthi) — a Full-Stack and AI Engineer focused on building high-performance systems that connect advanced AI models with clean, reliable user experiences.
+                </p>
 
-              <p className="text-sm sm:text-base text-[#8e8e8e] leading-relaxed">
-                Specialized in architecting high-throughput voice processing pipelines, semantic vector retrieval engines, and production-ready microservices that bridge complex AI backends with frictionless frontend interfaces.
-              </p>
+                <p>
+                  Currently working as a <span className="text-white font-medium">Software Engineer at AlfredWorks AI</span>, I build real-time processing pipelines for AI workflows, connecting complex backend architectures with modern web applications.
+                </p>
+              </div>
 
-              {/* Action Button */}
-              <div className="pt-2">
+              {/* Core Strengths Bullet Points */}
+              <div className="space-y-2.5 pt-2 border-t border-white/5">
+                {HIGHLIGHT_POINTS.map((point) => (
+                  <div key={point} className="flex items-start gap-3 text-xs sm:text-sm text-[#8e8e8e]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#e0002a] mt-2 shrink-0" />
+                    <span>{point}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4 pt-4">
                 <Link
                   href="#experience"
-                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 hover:border-[#c40024] bg-white/[0.02] hover:bg-[#c40024]/15 text-white text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(196,0,36,0.35)]"
+                  className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#c40024] hover:bg-[#e0002a] text-white text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(224,0,42,0.4)]"
                 >
                   <span>MY JOURNEY</span>
-                  <ArrowRight className="w-4 h-4 text-[#c40024] group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
+
+                <a
+                  href={SITE_CONFIG.resumePath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/15 hover:border-[#c40024] bg-white/[0.02] hover:bg-[#c40024]/10 text-white text-xs font-mono tracking-[0.15em] uppercase transition-all duration-300"
+                >
+                  <FileText className="w-3.5 h-3.5 text-[#e0002a]" />
+                  <span>RESUME PDF</span>
+                </a>
               </div>
             </div>
 
-            {/* Right Portrait Column (5 cols) */}
+            {/* ── RIGHT COLUMN: Clean Technical Snapshot Card (5 cols) ── */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#151515] to-[#0a0a0a] p-2 group shadow-2xl">
-                {/* Glowing red back rim light */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-tr from-[#c40024]/30 via-transparent to-[#e0002a]/20 opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                />
+              <div className="w-full max-w-md rounded-2xl bg-[#0e0e0e]/90 border border-white/10 hover:border-[#c40024]/40 transition-colors p-6 sm:p-7 space-y-5 shadow-xl relative overflow-hidden group">
+                {/* Subtle Top Red Accent */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e0002a] to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0e0e0e] flex items-center justify-center">
-                  {/* Photo or Styled Avatar Backdrop */}
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#c40024]/20 via-[#0a0a0a] to-[#050505]" />
-                  
-                  {/* Subject Silhouette / Photo Container */}
-                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full border-2 border-[#c40024]/60 p-1 shadow-[0_0_30px_rgba(196,0,36,0.35)] mb-4 overflow-hidden bg-[#1a1a1a]">
-                      <div className="w-full h-full rounded-full bg-gradient-to-br from-[#2a2a2a] via-[#151515] to-[#0a0a0a] flex items-center justify-center text-3xl font-black text-white font-[family-name:var(--font-bebas)]">
-                        ATM
-                      </div>
-                    </div>
-                    <span className="text-lg font-bold text-white tracking-wider font-[family-name:var(--font-oswald)] uppercase">
-                      Adhul Thiruven Maruthi
+                {/* Card Header */}
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center gap-2.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e0002a] opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#e0002a]" />
                     </span>
-                    <span className="text-xs text-[#c40024] font-mono tracking-widest uppercase mt-1">
-                      Full-Stack &amp; AI Engineer
+                    <span className="text-xs font-mono font-semibold tracking-[0.2em] uppercase text-white">
+                      SNAPSHOT
                     </span>
                   </div>
+                  <span className="text-[11px] font-mono text-[#666] uppercase">
+                    SYSTEM DOSSIER
+                  </span>
+                </div>
 
-                  {/* Red bottom accent border */}
-                  <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#e0002a] to-transparent" />
+                {/* Details List */}
+                <div className="space-y-3.5 text-xs font-mono">
+                  {SNAPSHOT_ITEMS.map((item) => (
+                    <div key={item.label} className="flex flex-col gap-1 pb-2.5 border-b border-white/5 last:border-0 last:pb-0">
+                      <span className="text-[10px] tracking-wider uppercase text-[#777]">
+                        {item.label}
+                      </span>
+                      <span className="text-[#e0e0e0] font-sans font-medium text-xs sm:text-[13px] leading-snug">
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bottom Quick Tags */}
+                <div className="pt-2 flex flex-wrap gap-1.5">
+                  {["Voice AI", "RAG Pipelines", "Microservices", "Next.js"].map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-md bg-white/[0.03] border border-white/5 text-[11px] font-mono text-[#999]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
+
           </div>
         </motion.div>
       </div>

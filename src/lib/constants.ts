@@ -5,7 +5,7 @@ export const SITE_CONFIG = {
   role: "Full-Stack & AI Engineer",
   title: "Maruthi — Full-Stack & AI Engineer",
   description: "Portfolio of Maruthi — Full-Stack & AI Engineer.",
-  resumePath: "/resume/Maruthi-Resume.pdf",
+  resumePath: "https://drive.google.com/file/d/1a3MaJRF18NnNAZSYTL7bGiDy_3wXnaU6/view?usp=drive_link",
   videoBackgroundPath: "/video/portfolio-background.mp4",
 } as const;
 

@@ -12,7 +12,7 @@ export const SITE = {
   tagline: "Building full-stack products and AI-powered systems from interface to intelligent backend.",
   email: "thiruvenmaruthi@gmail.com",
   phone: "+91 7569669019",
-  resumePath: "/resume/Maruthi-Resume.pdf",
+  resumePath: "https://drive.google.com/file/d/1a3MaJRF18NnNAZSYTL7bGiDy_3wXnaU6/view?usp=drive_link",
   videoPath: "/video/portfolio-background.mp4",
   // Add actual URLs here when available; leave empty string to hide the link
   social: {

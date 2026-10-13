@@ -1,82 +1,10 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Plus, ArrowUpRight, Sparkles } from "lucide-react";
-
-interface PrimaryProject {
-  number: string;
-  category: string;
-  title: string;
-  description: string;
-  imageSrc: string;
-  technologies: string[];
-  githubUrl: string;
-}
-
-interface BentoTextCard {
-  number: string;
-  category: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  githubUrl: string;
-}
-
-const PRIMARY_PROJECTS: PrimaryProject[] = [
-  {
-    number: "01",
-    category: "SUSTAINABILITY / FULL-STACK",
-    title: "EcoVeda",
-    description:
-      "A holistic sustainable living platform empowering communities through skill development, resource coordination, and SDG-aligned workflows.",
-    imageSrc: "/images/ecoveda.png",
-    githubUrl: "https://github.com/Maruthi0302",
-    technologies: ["React.js", "Python", "FastAPI", "Full-Stack", "Docker"],
-  },
-  {
-    number: "02",
-    category: "MAPS / SOCIAL IMPACT",
-    title: "The Giving Plate",
-    description:
-      "An AI-powered surplus food redistribution platform connecting donors with NGOs using intelligent location-aware routing across India.",
-    imageSrc: "/images/givingplate.png",
-    githubUrl: "https://github.com/Maruthi0302/The-Giving-Plate",
-    technologies: ["React.js", "Node.js", "Geoapify Maps", "AI Engine", "MongoDB"],
-  },
-];
-
-const BENTO_TEXT_CARDS: BentoTextCard[] = [
-  {
-    number: "03",
-    category: "VOICE AI / STREAMING",
-    title: "QueryMind AI",
-    description:
-      "Real-time voice-processing backend combining speech-to-text, low-latency ChromaDB retrieval, and automated customer support workflows.",
-    technologies: ["FastAPI", "Twilio", "LiveKit", "ChromaDB"],
-    githubUrl: "https://github.com/Maruthi0302/QueryMind-AI",
-  },
-  {
-    number: "04",
-    category: "SEMANTIC SEARCH",
-    title: "Resume Vector Matcher",
-    description:
-      "Containerized microservice scoring and ranking structured/unstructured candidate resumes via dense semantic embeddings.",
-    technologies: ["Python", "FastAPI", "Docker", "NLP"],
-    githubUrl: "https://github.com/Maruthi0302/Resume-Job-Matcher",
-  },
-  {
-    number: "05",
-    category: "RESEARCH & SYSTEMS",
-    title: "IEEE Voice Retrieval System",
-    description:
-      "Co-authored research architecture on voice-driven conversational workflows with sub-500ms retrieval pipelines.",
-    technologies: ["RAG", "Vector Search", "WebSockets"],
-    githubUrl: "https://github.com/Maruthi0302",
-  },
-];
-
-const RIGHT_PILLARS = ["IDEAS", "SYSTEMS", "PEOPLE", "IMPACT"] as const;
+import { ArrowRight, Plus, ArrowUpRight } from "lucide-react";
+import { PRIMARY_PROJECTS, BENTO_TEXT_CARDS, RIGHT_PILLARS } from "@/data/projects";
 
 export function Projects() {
   const shouldReduceMotion = useReducedMotion();
@@ -211,10 +139,12 @@ export function Projects() {
 
                   {/* Right Column: Image Preview */}
                   <div className="md:col-span-5 relative w-full aspect-[16/11] rounded-xl overflow-hidden border border-white/10 bg-[#070707] shadow-inner group-hover:border-[#c40024]/40 transition-colors">
-                    <img
+                    <Image
                       src={proj.imageSrc}
                       alt={proj.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover object-top group-hover:scale-[1.04] transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
                   </div>

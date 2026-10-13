@@ -6,7 +6,6 @@ import React, { useEffect, useRef } from "react";
 // CINEMATIC TUNING CONSTANTS
 // ==========================================
 const PARALLAX_EASE = 0.05;
-const DEAD_ZONE_RADIUS = 0.04;
 const MAX_TRANSLATE_X = 14;
 const MAX_TRANSLATE_Y = 10;
 const MAX_ROTATE_X = 0.9;
@@ -76,15 +75,7 @@ export function CinematicVideo({
       const W = window.innerWidth || 1;
       const H = window.innerHeight || 1;
 
-      const rawX = e.clientX / W;
-      const diff = rawX - 0.5;
-      const abs = Math.abs(diff);
-      let stabilised = 0.5;
-      if (abs > DEAD_ZONE_RADIUS) {
-        const sign = Math.sign(diff);
-        const remap = (abs - DEAD_ZONE_RADIUS) / (0.5 - DEAD_ZONE_RADIUS);
-        stabilised = 0.5 + sign * Math.min(0.5, remap * 0.5);
-      }
+
 
       const cx = (e.clientX / W) * 2 - 1;
       const cy = (e.clientY / H) * 2 - 1;

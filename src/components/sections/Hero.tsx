@@ -22,13 +22,7 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" {...props}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
+
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -212,7 +206,7 @@ export function Hero() {
           <span className="w-8 h-[1px] bg-white/25" />
           <div className="flex items-center gap-3.5 text-[#9e9e9e]">
             <a
-              href="https://github.com"
+              href={SITE_CONFIG.social.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -221,22 +215,13 @@ export function Hero() {
               <GithubIcon />
             </a>
             <a
-              href="https://linkedin.com"
+              href={SITE_CONFIG.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="hover:text-white transition-colors p-1"
             >
               <LinkedinIcon />
-            </a>
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X (Twitter)"
-              className="hover:text-white transition-colors p-1"
-            >
-              <XIcon />
             </a>
           </div>
         </div>

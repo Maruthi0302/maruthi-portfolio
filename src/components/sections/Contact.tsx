@@ -8,7 +8,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 export function Contact() {
   const shouldReduceMotion = useReducedMotion();
   const [copied, setCopied] = useState(false);
-  const email = "thiruvenmaruthi@gmail.com";
+  const email = SITE_CONFIG.email;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(email);
@@ -103,7 +103,7 @@ export function Contact() {
           className="pt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-[#888]"
         >
           <a
-            href="https://linkedin.com"
+            href={SITE_CONFIG.social.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-widest"
@@ -115,24 +115,12 @@ export function Contact() {
           <span className="text-white/10">•</span>
 
           <a
-            href="https://github.com/Maruthi0302"
+            href={SITE_CONFIG.social.github}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-widest"
           >
             <span>GITHUB</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#e0002a]" />
-          </a>
-
-          <span className="text-white/10">•</span>
-
-          <a
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-widest"
-          >
-            <span>TWITTER</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-[#e0002a]" />
           </a>
 

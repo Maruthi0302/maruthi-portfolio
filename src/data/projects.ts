@@ -1,42 +1,73 @@
-import type { Project } from "@/types";
+export interface PrimaryProject {
+  number: string;
+  category: string;
+  title: string;
+  description: string;
+  imageSrc: string;
+  technologies: string[];
+  githubUrl: string;
+}
 
-export const projects: Project[] = [
+export interface BentoTextCard {
+  number: string;
+  category: string;
+  title: string;
+  description: string;
+  technologies: string[];
+  githubUrl: string;
+}
+
+export const PRIMARY_PROJECTS: PrimaryProject[] = [
   {
-    id: "querymind-ai",
     number: "01",
-    title: "QUERYMIND AI",
+    category: "SUSTAINABILITY / FULL-STACK",
+    title: "EcoVeda",
     description:
-      "A real-time voice-processing backend system for automated customer support workflows. Combines speech-to-text, request classification, and retrieval-based response generation.",
-    challenge:
-      "Architecting a real-time voice pipeline with low-latency retrieval across large document corpora while maintaining semantic accuracy under variable speech input quality.",
-    technologies: ["Python", "FastAPI", "Docker", "Twilio", "LiveKit", "ChromaDB"],
-    highlights: [
-      "Real-time voice processing & speech-to-text",
-      "Retrieval-based response generation via ChromaDB",
-      "Request classification & sentiment analysis",
-      "API-driven communication services via Twilio",
-    ],
-    githubUrl: "",  // configure in src/data/projects.ts when available
-    liveUrl: "",
-    featured: true,
+      "A holistic sustainable living platform empowering communities through skill development, resource coordination, and SDG-aligned workflows.",
+    imageSrc: "/images/ecoveda.png",
+    githubUrl: "https://github.com/Maruthi0302",
+    technologies: ["React.js", "Python", "FastAPI", "Full-Stack", "Docker"],
   },
   {
-    id: "the-giving-plate",
     number: "02",
-    title: "THE GIVING PLATE",
+    category: "MAPS / SOCIAL IMPACT",
+    title: "The Giving Plate",
     description:
-      "A full-stack platform connecting surplus food providers with NGOs. Uses proximity-based matching and optimized routing logic to reduce food waste through location-aware interactions.",
-    challenge:
-      "Implementing reliable geospatial matching between donors and NGOs with proximity ranking and routing optimization across a distributed set of drop-off and pickup points.",
-    technologies: ["React.js", "Node.js", "Geoapify Maps API"],
-    highlights: [
-      "Proximity-based donor–NGO matching",
-      "Geoapify Maps API integration",
-      "Optimized routing logic",
-      "Recognized at a sustainability-focused hackathon",
-    ],
-    githubUrl: "",
-    liveUrl: "",
-    featured: true,
+      "An AI-powered surplus food redistribution platform connecting donors with NGOs using intelligent location-aware routing across India.",
+    imageSrc: "/images/givingplate.png",
+    githubUrl: "https://github.com/Maruthi0302/The-Giving-Plate",
+    technologies: ["React.js", "Node.js", "Geoapify Maps", "AI Engine", "MongoDB"],
   },
 ];
+
+export const BENTO_TEXT_CARDS: BentoTextCard[] = [
+  {
+    number: "03",
+    category: "VOICE AI / STREAMING",
+    title: "QueryMind AI",
+    description:
+      "Real-time voice-processing backend combining speech-to-text, low-latency ChromaDB retrieval, and automated customer support workflows.",
+    technologies: ["FastAPI", "Twilio", "LiveKit", "ChromaDB"],
+    githubUrl: "https://github.com/Maruthi0302/QueryMind-AI",
+  },
+  {
+    number: "04",
+    category: "SEMANTIC SEARCH",
+    title: "Resume Vector Matcher",
+    description:
+      "Containerized microservice scoring and ranking structured/unstructured candidate resumes via dense semantic embeddings.",
+    technologies: ["Python", "FastAPI", "Docker", "NLP"],
+    githubUrl: "https://github.com/Maruthi0302/Resume-Job-Matcher",
+  },
+  {
+    number: "05",
+    category: "RESEARCH & SYSTEMS",
+    title: "IEEE Voice Retrieval System",
+    description:
+      "Co-authored research architecture on voice-driven conversational workflows with sub-500ms retrieval pipelines.",
+    technologies: ["RAG", "Vector Search", "WebSockets"],
+    githubUrl: "https://github.com/Maruthi0302",
+  },
+];
+
+export const RIGHT_PILLARS = ["IDEAS", "SYSTEMS", "PEOPLE", "IMPACT"] as const;

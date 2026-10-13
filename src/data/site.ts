@@ -14,11 +14,9 @@ export const SITE = {
   phone: "+91 7569669019",
   resumePath: "https://drive.google.com/file/d/1a3MaJRF18NnNAZSYTL7bGiDy_3wXnaU6/view?usp=drive_link",
   videoPath: "/video/portfolio-background.mp4",
-  // Add actual URLs here when available; leave empty string to hide the link
   social: {
-    github: "",       // e.g. "https://github.com/yourhandle"
-    linkedin: "",     // e.g. "https://linkedin.com/in/yourhandle"
-    twitter: "",
+    github: "https://github.com/Maruthi0302",
+    linkedin: "https://www.linkedin.com/in/thiruven-maruthi-a-8740402ab/",
   },
 } as const;
 
